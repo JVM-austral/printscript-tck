@@ -1,19 +1,35 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm'
 }
+
+
+dependencies {
+    implementation 'org.JVM-austral:ast:1.0.3'
+    implementation 'org.JVM-austral:cli:1.0.3'
+    implementation 'org.JVM-austral:common:1.0.3'
+    implementation 'org.JVM-austral:formatter:1.0.3'
+    implementation 'org.JVM-austral:interpreter:1.0.3'
+    implementation 'org.JVM-austral:lexer:1.0.3'
+    implementation 'org.JVM-austral:linter:1.0.3'
+    implementation 'org.JVM-austral:parser:1.0.3'
+    implementation 'org.JVM-austral:runner:1.0.3'
+    implementation 'org.JVM-austral:token:1.0.3'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
 
 repositories {
     mavenLocal()
     mavenCentral()
-// TODO: uncomment to be able to fetch packages in your own repository
-//    maven {
-//        name = "GitHubPackages"
-//        url = uri("https://maven.pkg.github.com/<your-username>/printscript")
-//        credentials {
-//            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-//            password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
-//        }
-//    }
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/JVM-austral/tp-ingsis-interpreter")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+        }
+    }
 }
 
 java {

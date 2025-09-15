@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 
+
 public interface PrintScriptFormatter {
     /**
      * executes a PrintScript file handling its resulting messages and errors.
