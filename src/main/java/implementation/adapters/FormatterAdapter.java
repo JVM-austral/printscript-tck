@@ -29,40 +29,40 @@ public class FormatterAdapter implements PrintScriptFormatter {
 
     @Override
     public void format(InputStream src, String version, InputStream config, Writer writer) {
-        try {
-            Formatter myFormatter = new FormatterFactoryV1().create();
-            InputStreamReader reader = new InputStreamReader(src);
-            TokenBuffer tokenBuffer = new TokenBuffer();
-            LexerWrapperImplementation lexerWrapper = new LexerWrapperImplementation(lexer, reader, tokenBuffer);
-
-            List<Result<? extends Token>> rawTokens = extractAllTokens(lexerWrapper);
-            List<Result<Token>> tokens = castTokenList(rawTokens);
-
-            String formattedCode = myFormatter.format(tokens);
-
-            writer.write(formattedCode);
-            writer.flush();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Error during formatting", e);
-        }
+//        try {
+////            Formatter myFormatter = new FormatterFactoryV1().create();
+////            InputStreamReader reader = new InputStreamReader(src);
+////            TokenBuffer tokenBuffer = new TokenBuffer();
+////            LexerWrapperImplementation lexerWrapper = new LexerWrapperImplementation(lexer, reader, tokenBuffer);
+////
+////            List<Result<? extends Token>> rawTokens = extractAllTokens(lexerWrapper);
+////            List<Result<Token>> tokens = castTokenList(rawTokens);
+//
+////            String formattedCode = myFormatter.format(tokens);
+////
+////            writer.write(formattedCode);
+////            writer.flush();
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException("Error during formatting", e);
+//        }
     }
 
-    private List<Result<? extends Token>> extractAllTokens(LexerWrapperImplementation lexerWrapper) {
-        List<Result<? extends Token>> tokens = new ArrayList<>();
-        while (lexerWrapper.hasNext()) {
-            Result<? extends Token> token = lexerWrapper.next();
-            tokens.add(token);
-        }
-        return tokens;
-    }
+//    private List<Result<? extends Token>> extractAllTokens(LexerWrapperImplementation lexerWrapper) {
+//        List<Result<? extends Token>> tokens = new ArrayList<>();
+//        while (lexerWrapper.hasNext()) {
+//            Result<? extends Token> token = lexerWrapper.next();
+//            tokens.add(token);
+//        }
+//        return tokens;
+//    }
 
-    @SuppressWarnings("unchecked")
-    private List<Result<Token>> castTokenList(List<Result<? extends Token>> rawTokens) {
-        List<Result<Token>> tokens = new ArrayList<>();
-        for (Result<? extends Token> result : rawTokens) {
-            tokens.add((Result<Token>) result);
-        }
-        return tokens;
-    }
+//    @SuppressWarnings("unchecked")
+//    private List<Result<Token>> castTokenList(List<Result<? extends Token>> rawTokens) {
+//        List<Result<Token>> tokens = new ArrayList<>();
+//        for (Result<? extends Token> result : rawTokens) {
+//            tokens.add((Result<Token>) result);
+//        }
+//        return tokens;
+//    }
 }

@@ -1,9 +1,11 @@
 package implementation.adapters;
 
+import evaluator.input.ConsoleInputProvider;
 import interpreter.ErrorHandler;
 import interpreter.InputProvider;
 import interpreter.PrintEmitter;
 import interpreter.PrintScriptInterpreter;
+import mock.StdOutputHandler;
 import runner.RunnerImplementation;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,10 +25,9 @@ public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
             InputProvider provider
     ) {
         try {
-            byte[] codeBytes = src.readAllBytes();
-            String code = new String(codeBytes, StandardCharsets.UTF_8);
+
             String runnerVersion = version.equals("1.0") ? "V1" : "V2";
-            RunnerImplementation runner = new RunnerImplementation(runnerVersion);
+            RunnerImplementation runner = new RunnerImplementation(runnerVersion, new StdOutputHandler(), new ConsoleInputProvider());
 
 
             PrintStream originalOut = System.out;
@@ -52,7 +53,7 @@ public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
                 System.setOut(new PrintStream(capturingStream, true, StandardCharsets.UTF_8));
                 System.setErr(new PrintStream(capturingStream, true, StandardCharsets.UTF_8));
 
-                runner.run(code);
+                runner.run(src);
             } finally {
                 // Flush last partial line
                 if (lineBuffer.length() > 0) {
