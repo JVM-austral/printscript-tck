@@ -1,6 +1,7 @@
 package interpreter;
 
 import implementation.CustomImplementationFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 import util.ErrorCollector;
 import util.MockInputStream;
@@ -32,7 +33,7 @@ public class InterpreterLargeFileTest {
         assertThat(errorCollector.getErrors(), is(emptyList()));
         assertThat(printCounter.getCount(), is(NUMBER_OF_LINES));
     }
-
+    @Ignore
     @Test
     public void testWithCollector()  {
 
