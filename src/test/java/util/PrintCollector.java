@@ -12,6 +12,9 @@ public class PrintCollector implements PrintEmitter {
     @Override
     public void print(String message) {
         messages.add(message);
+       if( message.length() > 1024 * 32){
+              throw new OutOfMemoryError("Java heap space");
+       }
     }
 
     public List<String> getMessages() {

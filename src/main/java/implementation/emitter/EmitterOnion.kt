@@ -17,7 +17,6 @@ class EmitterOnion(private val emitter: PrintEmitter): OutputHandler {
             }
         } ?: message
         emitter.print(formatted)
-
     }
 
 
