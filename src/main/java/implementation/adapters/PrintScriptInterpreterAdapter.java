@@ -1,8 +1,9 @@
 package implementation.adapters;
 
-import errorhandler.MockErrorHandler;
+import ast.Ast;
 import implementation.emitter.EmitterOnion;
 import implementation.input.InputProviderOnion;
+import errorhandler.MockErrorHandler;
 import interpreter.ErrorHandler;
 import interpreter.InputProvider;
 import interpreter.PrintEmitter;
@@ -10,6 +11,8 @@ import interpreter.PrintScriptInterpreter;
 import runner.RunnerImplementation;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
 
@@ -22,6 +25,7 @@ public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
             InputProvider provider
     ) {
 
+
         String ver;
         if (version.equals("1.0")) {
             ver = "V1";
@@ -33,8 +37,12 @@ public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
 
         var outputHandler = new EmitterOnion(emitter);
         var inputProvider = new InputProviderOnion(provider);
+        Map<String, Ast> env = new HashMap<>();
+        System.getenv().forEach((key, value) -> {
+            env.put(key, new ast.StringLiteral(value, 0, 0));
+        });
 
-        var runner = new RunnerImplementation(ver, outputHandler, inputProvider);
+        var runner = new RunnerImplementation(ver, outputHandler, inputProvider,env);
         runner.run(src);
 
         MockErrorHandler runnerErrorHandler = runner.getErrorHandler();
