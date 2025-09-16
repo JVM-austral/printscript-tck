@@ -42,8 +42,15 @@ public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
             env.put(key, new ast.StringLiteral(value, 0, 0));
         });
 
+
+
         var runner = new RunnerImplementation(ver, outputHandler, inputProvider,env);
-        runner.run(src);
+        try {
+            runner.run(src);
+        } catch (OutOfMemoryError e) {
+            handler.reportError("Java heap space");
+            return;
+        }
 
         MockErrorHandler runnerErrorHandler = runner.getErrorHandler();
 
