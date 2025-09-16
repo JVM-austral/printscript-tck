@@ -2,6 +2,7 @@ package implementation.emitter
 import interpreter.PrintEmitter
 import mock.OutputHandler
 class EmitterOnion(private val emitter: PrintEmitter): OutputHandler {
+
     override fun print(message: String) {
         val regex = Regex("""(.*?)(-?\d+(\.\d+)?)(\s*)$""")
         val formatted = regex.matchEntire(message)?.let { match ->
@@ -16,6 +17,7 @@ class EmitterOnion(private val emitter: PrintEmitter): OutputHandler {
             }
         } ?: message
         emitter.print(formatted)
+
     }
 
 

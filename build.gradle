@@ -5,16 +5,16 @@ plugins {
 
 
 dependencies {
-    implementation 'org.JVM-austral:ast:1.1.12'
-    implementation 'org.JVM-austral:cli:1.1.12'
-    implementation 'org.JVM-austral:common:1.1.12'
-    implementation 'org.JVM-austral:formatter:1.1.12'
-    implementation 'org.JVM-austral:interpreter:1.1.12'
-    implementation 'org.JVM-austral:lexer:1.1.12'
-    implementation 'org.JVM-austral:linter:1.1.12'
-    implementation 'org.JVM-austral:parser:1.1.12'
-    implementation 'org.JVM-austral:runner:1.1.12'
-    implementation 'org.JVM-austral:token:1.1.12'
+    implementation 'org.JVM-austral:ast:1.1.14'
+    implementation 'org.JVM-austral:cli:1.1.14'
+    implementation 'org.JVM-austral:common:1.1.14'
+    implementation 'org.JVM-austral:formatter:1.1.14'
+    implementation 'org.JVM-austral:interpreter:1.1.14'
+    implementation 'org.JVM-austral:lexer:1.1.14'
+    implementation 'org.JVM-austral:linter:1.1.14'
+    implementation 'org.JVM-austral:parser:1.1.14'
+    implementation 'org.JVM-austral:runner:1.1.14'
+    implementation 'org.JVM-austral:token:1.1.14'
 }
 
 

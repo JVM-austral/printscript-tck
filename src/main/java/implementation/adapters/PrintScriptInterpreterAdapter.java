@@ -42,8 +42,6 @@ public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
             env.put(key, new ast.StringLiteral(value, 0, 0));
         });
 
-
-
         var runner = new RunnerImplementation(ver, outputHandler, inputProvider,env);
         try {
             runner.run(src);

@@ -7,6 +7,8 @@ import util.MockInputStream;
 import util.PrintCollector;
 import util.PrintCounter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static java.util.Collections.emptyList;
@@ -33,6 +35,7 @@ public class InterpreterLargeFileTest {
 
     @Test
     public void testWithCollector()  {
+
         final PrintCollector printCollector = new PrintCollector();
         final ErrorCollector errorCollector = new ErrorCollector();
         final var inputStream = new MockInputStream(LINE, NUMBER_OF_LINES);
