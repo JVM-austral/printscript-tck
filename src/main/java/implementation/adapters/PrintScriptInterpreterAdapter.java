@@ -1,19 +1,18 @@
 package implementation.adapters;
 
-import evaluator.input.ConsoleInputProvider;
+import ast.Ast;
+import implementation.emitter.EmitterOnion;
+import implementation.input.InputProviderOnion;
+import errorhandler.MockErrorHandler;
 import interpreter.ErrorHandler;
 import interpreter.InputProvider;
 import interpreter.PrintEmitter;
 import interpreter.PrintScriptInterpreter;
-import mock.StdOutputHandler;
 import runner.RunnerImplementation;
+
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
 
@@ -25,60 +24,33 @@ public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
             ErrorHandler handler,
             InputProvider provider
     ) {
-        try {
-
-            String runnerVersion = version.equals("1.0") ? "V1" : "V2";
-            RunnerImplementation runner = new RunnerImplementation(runnerVersion, new StdOutputHandler(), new ConsoleInputProvider(), new HashMap<>());
 
 
-            PrintStream originalOut = System.out;
-            PrintStream originalErr = System.err;
+        String ver;
+        if (version.equals("1.0")) {
+            ver = "V1";
+        } else if (version.equals("1.1")) {
+            ver = "V2";
+        } else {
+            throw new IllegalArgumentException("Unsupported version: " + version);
+        }
 
-            List<String> lines = new ArrayList<>();
-            StringBuilder lineBuffer = new StringBuilder();
+        var outputHandler = new EmitterOnion(emitter);
+        var inputProvider = new InputProviderOnion(provider);
+        Map<String, Ast> env = new HashMap<>();
+        System.getenv().forEach((key, value) -> {
+            env.put(key, new ast.StringLiteral(value, 0, 0));
+        });
 
-            OutputStream capturingStream = new OutputStream() {
-                @Override
-                public void write(int b) {
-                    char c = (char) b;
-                    if (c == '\n') {
-                        lines.add(lineBuffer.toString());
-                        lineBuffer.setLength(0);
-                    } else if (c != '\r') {
-                        lineBuffer.append(c);
-                    }
-                }
-            };
+        var runner = new RunnerImplementation(ver, outputHandler, inputProvider,env);
+        runner.run(src);
 
-            try {
-                System.setOut(new PrintStream(capturingStream, true, StandardCharsets.UTF_8));
-                System.setErr(new PrintStream(capturingStream, true, StandardCharsets.UTF_8));
+        MockErrorHandler runnerErrorHandler = runner.getErrorHandler();
 
-                runner.run(src);
-            } finally {
-                // Flush last partial line
-                if (lineBuffer.length() > 0) {
-                    lines.add(lineBuffer.toString());
-                }
-                System.setOut(originalOut);
-                System.setErr(originalErr);
-            }
+        var errors = runnerErrorHandler.getCapturedErrors();
 
-            String errorHeader = "Printing errors found during execution:";
-            boolean afterErrorHeader = false;
-            for (String line : lines) {
-                if (line.isBlank()) {
-                    continue;
-                } else if (line.equals(errorHeader)) {
-                    afterErrorHeader = true;
-                } else if (afterErrorHeader) {
-                    handler.reportError(line);
-                } else {
-                    emitter.print(line);
-                }
-            }
-        } catch (Exception e) {
-            handler.reportError("Interpreter error: " + e.getMessage());
+        for (var error : errors) {
+            handler.reportError(error);
         }
     }
 }
