@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
@@ -27,7 +28,7 @@ public class PrintScriptInterpreterAdapter implements PrintScriptInterpreter {
         try {
 
             String runnerVersion = version.equals("1.0") ? "V1" : "V2";
-            RunnerImplementation runner = new RunnerImplementation(runnerVersion, new StdOutputHandler(), new ConsoleInputProvider());
+            RunnerImplementation runner = new RunnerImplementation(runnerVersion, new StdOutputHandler(), new ConsoleInputProvider(), new HashMap<>());
 
 
             PrintStream originalOut = System.out;
